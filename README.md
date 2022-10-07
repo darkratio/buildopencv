@@ -1,8 +1,8 @@
-﻿buildOpenCV
+﻿## buildOpenCV
 
 Script for building OpenCV 4.6-dev
 
-Building for:
+* **Building for:
 
 Ubuntu
 
