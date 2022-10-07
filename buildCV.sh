@@ -17,7 +17,9 @@ OPENCV_CONTRIB='YES'          # Install OpenCV's extra modules (YES/NO)
 # |------------------------------------------------------|
 # | OS               | OpenCV       | Test | Last test   |
 # |------------------|--------------|------|-------------|
-# | Ubuntu 20.04 LTS | OpenCV 4.5.1 | OK   | 04 Oct 2022 |
+# | Ubuntu 22.04 LTS | OpenCV 4.6.4 | OK   | 04 Oct 2022 |
+# |------------------|--------------|------|-------------|
+# | Ubuntu 20.04 LTS | OpenCV 4.5.4 | OK   | 10 Dec 2021 |
 # |------------------|--------------|------|-------------|
 # | Ubuntu 20.04 LTS | OpenCV 4.5.1 | OK   | 27 Mar 2021 |
 # |----------------------------------------------------- |
@@ -76,10 +78,10 @@ sudo apt-get install libopenblas-dev liblapacke-dev libva-dev libopenjp2-tools l
 # Install Ceres Solver
 sudo apt-get install cmake libeigen3-dev libgflags-dev libgoogle-glog-dev libsuitesparse-dev libatlas-base-dev libmetis-dev
 
-wget https://ceres-solver.googlesource.com/ceres-solver
+git clone https://github.com/darkratio/ceres-solver.git
 cd ceres-solver && mkdir build && cd build
 cmake ..
-make -j4
+make -j20
 make test
 sudo make install
 
@@ -153,8 +155,7 @@ cmake -D CMAKE_BUILD_TYPE=RELEASE \
 	-D BUILD_opencv_python3=ON \
 	-D OPENCV_EXTRA_MODULES_PATH=../../opencv_contrib/modules \
 	-D BUILD_EXAMPLES=ON \
-	$"PACKAGE_OPENCV" \
-    ../
+	$"PACKAGE_OPENCV" ..
 
 
 if [ $? -eq 0 ] ; then
@@ -166,7 +167,7 @@ else
   exit 1
 fi
 
-# Consider the MAXN performance mode if using a barrel jack on the Nano
+# Consider the MAXN performance mode
 time make -j$NUM_JOBS
 if [ $? -eq 0 ] ; then
   echo "OpenCV make successful"
