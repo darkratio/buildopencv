@@ -17,7 +17,7 @@ OPENCV_CONTRIB='YES'          # Install OpenCV's extra modules (YES/NO)
 # |------------------------------------------------------|
 # | OS               | OpenCV       | Test | Last test   |
 # |------------------|--------------|------|-------------|
-# | Ubuntu 22.04 LTS | OpenCV 4.6.4 | OK   | 04 Oct 2022 |
+# | Ubuntu 22.04 LTS | OpenCV 4.6.0 | OK   | 04 Oct 2022 |
 # |------------------|--------------|------|-------------|
 # | Ubuntu 20.04 LTS | OpenCV 4.5.4 | OK   | 10 Dec 2021 |
 # |------------------|--------------|------|-------------|
@@ -81,7 +81,7 @@ sudo apt-get install cmake libeigen3-dev libgflags-dev libgoogle-glog-dev libsui
 git clone https://github.com/darkratio/ceres-solver.git
 cd ceres-solver && mkdir build && cd build
 cmake ..
-make -j20
+make -j
 make test
 sudo make install
 
@@ -96,7 +96,6 @@ if [ $OPENCV_CONTRIB = 'YES' ]; then
   wget https://github.com/opencv/opencv_contrib/archive/${OPENCV_VERSION}.zip
   unzip ${OPENCV_VERSION}.zip && rm ${OPENCV_VERSION}.zip
   mv opencv_contrib-${OPENCV_VERSION} opencv_contrib
-  mv opencv_contrib OpenCV
 fi
 
 cd OpenCV && mkdir build && cd build
@@ -149,8 +148,8 @@ cmake -D CMAKE_BUILD_TYPE=RELEASE \
 	-D WITH_QT=ON \
 	-D WITH_LIBV4L=ON \
 	-D WITH_V4L=ON \
-    -D WITH_GSTREAMER=ON \
-    -D WITH_GSTREAMER_0_10=OFF \
+    	-D WITH_GSTREAMER=ON \
+    	-D WITH_GSTREAMER_0_10=OFF \
 	-D OpenGL_GL_PREFERENCE=LEGACY \
 	-D BUILD_opencv_python3=ON \
 	-D OPENCV_EXTRA_MODULES_PATH=../../opencv_contrib/modules \
