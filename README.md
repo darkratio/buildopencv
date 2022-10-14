@@ -12,6 +12,7 @@
 # Building
 
 $ ./buildOpenCV.sh
+
 $ make -j$nproc
 * ensure atleast 16gb of ram and 8gb of swap memory before installing
 
