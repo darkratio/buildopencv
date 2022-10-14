@@ -78,27 +78,36 @@ sudo apt-get install libopenblas-dev liblapacke-dev libva-dev libopenjp2-tools l
 # Install Ceres Solver
 sudo apt-get install cmake libeigen3-dev libgflags-dev libgoogle-glog-dev libsuitesparse-dev libatlas-base-dev libmetis-dev
 
-git clone https://github.com/darkratio/ceres-solver.git
-cd ceres-solver && mkdir build && cd build
-cmake ..
-make -j
-make test
-sudo make install
+# git clone https://github.com/darkratio/ceres-solver.git
+# cd ceres-solver && mkdir build && cd build
+# cmake ..
+# make -j
+# make test
+# sudo make install
 
 
 # Download OpenCV and OpenCV Contrib. In June 2022, the 4.6.0 release didn’t include the fix to compile properly with the latest Ceres release. Cloning and building 4.6.0-dev from the repos includes the fix. Future OpenCV releases shouldn’t have this issue.
 
-wget https://github.com/opencv/opencv/archive/${OPENCV_VERSION}.zip
-unzip ${OPENCV_VERSION}.zip && rm ${OPENCV_VERSION}.zip
-mv opencv-${OPENCV_VERSION} OpenCV
+#wget https://github.com/opencv/opencv/archive/${OPENCV_VERSION}.zip
+#unzip ${OPENCV_VERSION}.zip && rm ${OPENCV_VERSION}.zip
+#mv opencv-${OPENCV_VERSION} OpenCV
+#cd ../../
+#git clone https://github.com/opencv/opencv.git
+#cd opencv
+#git checkout -b v${OPENCV_VERSION} ${OPENCV_VERSION}
 
 if [ $OPENCV_CONTRIB = 'YES' ]; then
-  wget https://github.com/opencv/opencv_contrib/archive/${OPENCV_VERSION}.zip
-  unzip ${OPENCV_VERSION}.zip && rm ${OPENCV_VERSION}.zip
-  mv opencv_contrib-${OPENCV_VERSION} opencv_contrib
+  #wget https://github.com/opencv/opencv_contrib/archive/refs/heads/4.x.zip
+  #unzip 4.x.zip && rm 4.x.zip
+  #mv opencv_contrib-4.x opencv_contrib
+  echo "Installing opencv_contrib"
+  cd ~/mycode/buildopencv
+  git clone https://github.com/opencv/opencv_contrib.git
+  cd opencv_contrib
+  #git checkout -b v${OPENCV_VERSION} ${OPENCV_VERSION}
 fi
 
-cd OpenCV && mkdir build && cd build
+cd ../opencv && mkdir build && cd build
 
 # Build and Install OpenCV
 
@@ -130,7 +139,7 @@ cmake -D CMAKE_BUILD_TYPE=RELEASE \
 fi
 
 if [ $OPENCV_CONTRIB = 'YES' ]; then
-cmake -D CMAKE_BUILD_TYPE=RELEASE \
+time cmake -D CMAKE_BUILD_TYPE=RELEASE \
 	-D CMAKE_INSTALL_PREFIX=/usr/local \
 	-D INSTALL_PYTHON_EXAMPLES=ON \
 	-D OPENCV_GENERATE_PKGCONFIG=ON \
@@ -154,7 +163,7 @@ cmake -D CMAKE_BUILD_TYPE=RELEASE \
 	-D BUILD_opencv_python3=ON \
 	-D OPENCV_EXTRA_MODULES_PATH=../../opencv_contrib/modules \
 	-D BUILD_EXAMPLES=ON \
-	$"PACKAGE_OPENCV" ..
+	 ../
 fi
 
 if [ $? -eq 0 ] ; then
@@ -166,8 +175,10 @@ else
   exit 1
 fi
 
-# Consider the MAXN performance mode
-time make -j$NUM_JOBS
+# use max no. of cpus
+# always ensure enough ram and swap memory before installing
+NUM_CPU=$(nproc)
+time make -j$(($NUM_CPU - 1))
 if [ $? -eq 0 ] ; then
   echo "OpenCV make successful"
 else
@@ -189,36 +200,19 @@ fi
 
 echo "Installing ... "
 sudo make install
-sudo ldconfig
 if [ $? -eq 0 ] ; then
    echo "OpenCV installed in: $CMAKE_INSTALL_PREFIX"
+   sudo ldconfig
 else
    echo "There was an issue with the final installation"
    exit 1
 fi
 
-# If PACKAGE_OPENCV is on, pack 'er up and get ready to go!
-# We should still be in the build directory ...
-if [ "$PACKAGE_OPENCV" != "" ] ; then
-   echo "Starting Packaging"
-   sudo ldconfig  
-   time sudo make package -j$NUM_JOBS
-   if [ $? -eq 0 ] ; then
-     echo "OpenCV make package successful"
-   else
-     # Try to make again; Sometimes there are issues with the build
-     # because of lack of resources or concurrency issues
-     echo "Make package did not build " >&2
-     echo "Retrying ... "
-     # Single thread this time
-     sudo make package
-     if [ $? -eq 0 ] ; then
-       echo "OpenCV make package successful"
-     else
-       # Try to make again
-       echo "Make package did not successfully build" >&2
-       echo "Please fix issues and retry build"
-       exit 1
-     fi
-   fi
+# check installation
+IMPORT_CHECK="$(python3 -c "import cv2 ; print(cv2.__version__)")"
+if [[ $IMPORT_CHECK != *$OPENCV_VERSION* ]]; then
+  echo "There was an error loading OpenCV in the Python sanity test."
+  echo "The loaded version does not match the version built here."
+  echo "Please check the installation."
+  echo "The first check should be the PYTHONPATH environment variable."
 fi
