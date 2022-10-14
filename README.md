@@ -17,8 +17,8 @@ $ make -j$nproc
 * ensure atleast 16gb of ram and 8gb of swap memory before installing
 * edit opencv_contrib file
 * go to cd path to opencv_contrib/module/sfm/src/libmv_light/libmv/simple_pipeline
-* use your favourite editior and edit bundle.cc line no 552
-* change SetParameterization to SetManifold save and continue with installation.
+* use your favourite editior and edit **bundle.cc** line no. 552
+* change **SetParameterization** to **SetManifold** save and continue with installation.
 
 # Build Parameters
 
