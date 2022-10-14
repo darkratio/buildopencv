@@ -30,14 +30,6 @@ OpenCV is a very rich environment, with many different options available. Check 
 * QT - (No gtk support built in)
 * Python 3 bindings
 
-# Packaging
-
-By default, the build will create a OpenCV package. The package file will be found in:
-
-opencv/build/\_CPACK\_Packages/Linux/STGZ/OpenCV-4.6.0-<commit>-amd64.sh
-
-The advantage of packaging is that you can use the resulting package file to install this OpenCV build on other machines without having to rebuild. Whether the OpenCV package is built or not is controlled by the CMake directive CPACK\_BINARY\_DEB in the script.
-
 ## Notes
 
 feel free to give your feedback!!
