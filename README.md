@@ -10,9 +10,9 @@
 ## Packaging Option ( Builds package by default; --no\_package does not build package)
 
 # Building
-$ ./buildOpenCV.sh
+$ **./buildOpenCV.sh
 
-$ make -j$nproc
+$ **make -j$nproc
 
 * ensure atleast 16gb of ram and 8gb of swap memory before installing
 * edit opencv_contrib file
