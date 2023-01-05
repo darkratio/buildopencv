@@ -46,7 +46,7 @@ sudo apt install build-essential cmake pkg-config unzip yasm git checkinstall
 sudo apt-get install libgtk-3-dev
 
 # Image I/O libs
-$ sudo apt install libjpeg-dev libpng-dev libtiff-dev
+sudo apt install libjpeg-dev libpng-dev libtiff-dev
 
 # Video/Audio Libs - FFMPEG, GSTREAMER, x264 etc:
 sudo apt-get install libavcodec-dev libavformat-dev libswscale-dev
@@ -61,9 +61,9 @@ sudo apt-get install libopencore-amrnb-dev libopencore-amrwb-dev
 sudo apt-get install libtbb-dev
 
 # Python libraries for python3:
-$ sudo apt-get install python3-dev python3-pip
-$ sudo -H pip3 install -U pip numpy
-$ sudo apt install python3-testresources
+sudo apt-get install python3-dev python3-pip
+sudo -H pip3 install -U pip numpy
+sudo apt install python3-testresources
 
 # Optimization libraries for OpenCV
 sudo apt-get install libatlas-base-dev gfortran
@@ -78,12 +78,12 @@ sudo apt-get install libopenblas-dev liblapacke-dev libva-dev libopenjp2-tools l
 # Install Ceres Solver
 sudo apt-get install cmake libeigen3-dev libgflags-dev libgoogle-glog-dev libsuitesparse-dev libatlas-base-dev libmetis-dev
 
-# git clone https://github.com/darkratio/ceres-solver.git
-# cd ceres-solver && mkdir build && cd build
-# cmake ..
-# make -j
-# make test
-# sudo make install
+ git clone https://github.com/darkratio/ceres-solver.git
+ cd ceres-solver && mkdir build && cd build
+ cmake ..
+ make -j
+ make test
+ sudo make install
 
 
 # Download OpenCV and OpenCV Contrib. In June 2022, the 4.6.0 release didn’t include the fix to compile properly with the latest Ceres release. Cloning and building 4.6.0-dev from the repos includes the fix. Future OpenCV releases shouldn’t have this issue.
@@ -91,17 +91,17 @@ sudo apt-get install cmake libeigen3-dev libgflags-dev libgoogle-glog-dev libsui
 #wget https://github.com/opencv/opencv/archive/${OPENCV_VERSION}.zip
 #unzip ${OPENCV_VERSION}.zip && rm ${OPENCV_VERSION}.zip
 #mv opencv-${OPENCV_VERSION} OpenCV
-#cd ../../
-#git clone https://github.com/opencv/opencv.git
-#cd opencv
-#git checkout -b v${OPENCV_VERSION} ${OPENCV_VERSION}
+cd ../../
+git clone https://github.com/opencv/opencv.git
+cd opencv
+git checkout -b v${OPENCV_VERSION} ${OPENCV_VERSION}
 
 if [ $OPENCV_CONTRIB = 'YES' ]; then
   #wget https://github.com/opencv/opencv_contrib/archive/refs/heads/4.x.zip
   #unzip 4.x.zip && rm 4.x.zip
   #mv opencv_contrib-4.x opencv_contrib
   echo "Installing opencv_contrib"
-  cd ~/mycode/buildopencv
+  cd ../
   git clone https://github.com/opencv/opencv_contrib.git
   cd opencv_contrib
   #git checkout -b v${OPENCV_VERSION} ${OPENCV_VERSION}
@@ -147,6 +147,7 @@ time cmake -D CMAKE_BUILD_TYPE=RELEASE \
 	-D WITH_TBB=ON \
 	-D OPENCV_ENABLE_NONFREE=ON \
 	-D WITH_CUDA=ON \
+	-D WITH_FFMPEFG=ON
 	-D WITH_CUDNN=ON \
 	-D OPENCV_DNN_CUDA=ON \
 	-D ENABLE_FAST_MATH=1 \
