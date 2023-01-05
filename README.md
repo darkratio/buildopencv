@@ -14,7 +14,7 @@ $ **./buildOpenCV.sh**
 
 $ **make -j$nproc**
 
-* ensure atleast 16gb of ram and 8gb of swap memory before installing
+* ensure atleast 16gb of ram and 16gb of swap memory before installing
 * edit opencv_contrib file
 * go to cd path to opencv_contrib/module/sfm/src/libmv_light/libmv/simple_pipeline
 * use your favourite editior and edit **bundle.cc** line no. 552
