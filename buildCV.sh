@@ -104,7 +104,7 @@ if [ $OPENCV_CONTRIB = 'YES' ]; then
   cd ../
   git clone https://github.com/opencv/opencv_contrib.git
   cd opencv_contrib
-  #git checkout -b v${OPENCV_VERSION} ${OPENCV_VERSION}
+  git checkout -b v${OPENCV_VERSION} ${OPENCV_VERSION}
 fi
 
 cd ../opencv && mkdir build && cd build
